@@ -2,6 +2,7 @@
   "name": "@eko/demos",
   "private": true,
   "scripts": {
-    "arison": "bun run server.ts arison"
+    "arison": "bun run server.ts arison",
+    "beach-rotana-hotel": "bun run server.ts beach-rotana-hotel"
   }
 }
