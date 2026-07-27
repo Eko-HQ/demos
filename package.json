@@ -1,0 +1,7 @@
+{
+  "name": "@eko/demos",
+  "private": true,
+  "scripts": {
+    "arison": "bun run server.ts arison"
+  }
+}
