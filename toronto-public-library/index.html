@@ -5,48 +5,860 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="robots" content="noindex, nofollow" />
     <title>Toronto Public Library with Eko</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@600;700&family=Roboto:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
     <style>
+      :root {
+        --tpl-blue: #005fc0;
+        --tpl-link: #0062bd;
+        --tpl-teal: #02729e;
+        --tpl-text: #474747;
+        --tpl-alert: #ffe789;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
       html,
       body {
-        width: 100%;
-        height: 100%;
+        min-width: 320px;
         margin: 0;
-        overflow: hidden;
+        background: #fff;
+        color: var(--tpl-text);
+        font-family: Roboto, Helvetica, Arial, sans-serif;
+      }
+
+      body {
+        overflow-x: hidden;
+      }
+
+      button,
+      input {
+        font: inherit;
+      }
+
+      .site-header {
+        border-bottom: 1px solid #d7d7d7;
+        font-family: "Open Sans", Arial, sans-serif;
+      }
+
+      .utility-bar {
+        height: 47px;
+        border-bottom: 3px solid var(--tpl-blue);
         background: #fff;
       }
 
-      .client-preview,
-      .client-preview picture,
-      .client-preview img {
-        position: fixed;
-        inset: 0;
-        z-index: 0;
-        display: block;
-        width: 100%;
-        height: 100%;
+      .utility-inner,
+      .brand-inner {
+        width: min(1330px, calc(100% - 30px));
+        margin: 0 auto;
       }
 
-      .client-preview img {
+      .nav-inner,
+      .page-inner {
+        width: min(1320px, calc(100% - 30px));
+        margin: 0 auto;
+      }
+
+      .utility-inner {
+        display: flex;
+        height: 44px;
+        align-items: stretch;
+        justify-content: flex-end;
+      }
+
+      .utility-item {
+        display: flex;
+        align-items: center;
+        padding: 0 15px;
+        color: var(--tpl-teal);
+        font-size: 14px;
+        font-weight: 600;
+        white-space: nowrap;
+      }
+
+      .utility-item + .utility-item {
+        margin-left: 4px;
+      }
+
+      .utility-item.login {
+        min-width: 159px;
+        justify-content: center;
+        background: var(--tpl-blue);
+        color: #fff;
+      }
+
+      .pin-icon {
+        width: 10px;
+        height: 10px;
+        margin-right: 5px;
+        border: 2px solid currentColor;
+        border-radius: 50% 50% 50% 0;
+        transform: rotate(-45deg);
+      }
+
+      .help-icon {
+        display: inline-grid;
+        width: 13px;
+        height: 13px;
+        margin-right: 5px;
+        place-items: center;
+        border-radius: 50%;
+        background: var(--tpl-teal);
+        color: #fff;
+        font-size: 9px;
+        line-height: 1;
+      }
+
+      .chevron {
+        display: inline-block;
+        width: 7px;
+        height: 7px;
+        margin: -3px 0 0 7px;
+        border-right: 2px solid currentColor;
+        border-bottom: 2px solid currentColor;
+        transform: rotate(45deg);
+      }
+
+      .brand-row {
+        height: 96px;
+        background: #fff;
+      }
+
+      .brand-inner {
+        display: flex;
+        height: 100%;
+        align-items: center;
+        gap: 205px;
+      }
+
+      .logo {
+        display: block;
+        width: 271px;
+        height: 65px;
+        object-fit: contain;
+      }
+
+      .desktop-search {
+        display: flex;
+        flex: 1;
+        align-items: center;
+        gap: 11px;
+        color: #3f3f3f;
+        font-size: 16px;
+      }
+
+      .search-label {
+        font-weight: 600;
+        white-space: nowrap;
+      }
+
+      .search-select {
+        display: flex;
+        height: 35px;
+        align-items: center;
+        justify-content: space-between;
+        border: 1px solid #c9c9c9;
+        background: #fafafa;
+        color: #747474;
+        font-size: 14px;
+      }
+
+      .search-select.catalogue {
+        width: 123px;
+        padding: 0 12px;
+      }
+
+      .search-select.keyword {
+        width: 115px;
+        padding: 0 12px;
+      }
+
+      .search-field-wrap {
+        position: relative;
+        flex: 1;
+      }
+
+      .search-field {
+        width: 100%;
+        height: 35px;
+        border: 1px solid #c9c9c9;
+        border-right: 46px solid var(--tpl-blue);
+        outline: 0;
+        background: #fff;
+      }
+
+      .search-button {
+        position: absolute;
+        top: 0;
+        right: 0;
+        display: grid;
+        width: 46px;
+        height: 35px;
+        place-items: center;
+        color: #fff;
+      }
+
+      .magnifier {
+        position: relative;
+        width: 13px;
+        height: 13px;
+        border: 3px solid currentColor;
+        border-radius: 50%;
+      }
+
+      .magnifier::after {
+        position: absolute;
+        right: -6px;
+        bottom: -4px;
+        width: 7px;
+        height: 3px;
+        background: currentColor;
+        content: "";
+        transform: rotate(45deg);
+        transform-origin: left center;
+      }
+
+      .advanced-search {
+        position: absolute;
+        right: 0;
+        bottom: -21px;
+        color: #3e3e3e;
+        font-size: 12px;
+      }
+
+      .primary-nav {
+        height: 50px;
+        background: var(--tpl-blue);
+        color: #fff;
+      }
+
+      .nav-inner {
+        display: flex;
+        height: 100%;
+        align-items: center;
+        gap: 34px;
+        padding-left: 25px;
+      }
+
+      .nav-item {
+        display: flex;
+        align-items: center;
+        font-size: 16px;
+        font-weight: 600;
+        white-space: nowrap;
+      }
+
+      .calendar-small {
+        width: 15px;
+        height: 15px;
+        margin-right: 8px;
+        border: 1.5px solid currentColor;
+      }
+
+      .mobile-brand-actions {
+        display: none;
+      }
+
+      .service-alert {
+        display: flex;
+        min-height: 48px;
+        align-items: center;
+        justify-content: flex-start;
+        padding: 9px max(64px, calc((100vw - 1320px) / 2 + 28px));
+        background: var(--tpl-alert);
+        color: #111;
+        font-size: 16px;
+        line-height: 24px;
+      }
+
+      .service-alert a {
+        color: inherit;
+        text-decoration: underline;
+      }
+
+      .alert-close {
+        position: absolute;
+        right: max(34px, calc((100vw - 1320px) / 2 + 40px));
+        width: 20px;
+        height: 20px;
+      }
+
+      .alert-close::before,
+      .alert-close::after {
+        position: absolute;
+        top: 9px;
+        left: 1px;
+        width: 18px;
+        height: 2px;
+        background: #111;
+        content: "";
+        transform: rotate(45deg);
+      }
+
+      .alert-close::after {
+        transform: rotate(-45deg);
+      }
+
+      .featured {
+        padding-top: 34px;
+      }
+
+      h1,
+      h2,
+      h3,
+      p {
+        margin: 0;
+      }
+
+      h1 {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+      }
+
+      h2 {
+        color: #0a0a0a;
+        font-size: 32px;
+        line-height: 40px;
+      }
+
+      .featured-grid {
+        display: grid;
+        grid-template-columns: 284px minmax(0, 1fr) 327px;
+        gap: 42px;
+        margin-top: 30px;
+      }
+
+      .feature-image {
+        display: block;
+        width: 100%;
+        aspect-ratio: 2 / 1;
         object-fit: cover;
-        object-position: top center;
-        user-select: none;
+      }
+
+      .feature-title {
+        margin-top: 24px;
+        color: var(--tpl-link);
+        font-size: 20px;
+        font-weight: 700;
+        line-height: 27px;
+      }
+
+      .left-feature + .left-feature {
+        margin-top: 48px;
+      }
+
+      .lead-feature .feature-title {
+        font-size: 24px;
+        line-height: 30px;
+      }
+
+      .lead-feature p {
+        margin-top: 18px;
+        font-size: 16px;
+        line-height: 24px;
+      }
+
+      .feature-list {
+        display: grid;
+        gap: 24px;
+      }
+
+      .feature-list-item {
+        display: grid;
+        grid-template-columns: 163px 1fr;
+        gap: 20px;
+        align-items: start;
+      }
+
+      .feature-list-item .feature-title {
+        margin-top: 0;
+        font-size: 16px;
+        line-height: 22px;
+      }
+
+      .releases {
+        padding: 22px 0 64px;
+      }
+
+      .release-tabs {
+        display: flex;
+        gap: 34px;
+        margin-top: 12px;
+        border-bottom: 1px solid #ccc;
+        color: var(--tpl-link);
+        font-size: 16px;
+        font-weight: 700;
+      }
+
+      .release-tab {
+        padding: 10px 4px 9px;
+      }
+
+      .release-tab.active {
+        border-bottom: 4px solid var(--tpl-blue);
+        color: #222;
+      }
+
+      .book-row {
+        display: flex;
+        gap: 33px;
+        margin-top: 20px;
+        padding-left: 230px;
+        overflow: hidden;
+      }
+
+      .book {
+        flex: 0 0 145px;
+      }
+
+      .book img {
+        display: block;
+        width: 145px;
+        height: 218px;
+        object-fit: contain;
+        object-position: bottom center;
+      }
+
+      .book-title {
+        margin-top: 12px;
+        color: var(--tpl-link);
+        font-size: 15px;
+        font-weight: 700;
+        line-height: 20px;
       }
 
       #eko__frame {
         z-index: 2147483647;
       }
+
+      @media (max-width: 900px) {
+        .brand-inner,
+        .nav-inner,
+        .page-inner {
+          width: 100%;
+        }
+
+        .utility-inner {
+          width: calc(100% - 30px);
+          justify-content: space-between;
+        }
+
+        .desktop-utility,
+        .desktop-search,
+        .primary-nav {
+          display: none !important;
+        }
+
+        .utility-item {
+          padding: 0;
+        }
+
+        .utility-item.login {
+          min-width: 135px;
+          padding: 0 12px;
+        }
+
+        .mobile-utility {
+          display: flex;
+          align-items: center;
+          gap: 34px;
+          padding-left: 9px;
+          color: var(--tpl-teal);
+        }
+
+        .mobile-utility .pin-icon {
+          width: 12px;
+          height: 12px;
+          margin: 0;
+          border-width: 3px;
+        }
+
+        .mobile-utility .help-icon {
+          width: 18px;
+          height: 18px;
+          margin: 0;
+          font-size: 12px;
+        }
+
+        .brand-row {
+          height: 85px;
+        }
+
+        .brand-inner {
+          gap: 0;
+          padding: 10px 15px;
+        }
+
+        .logo {
+          width: 65px;
+          height: 65px;
+        }
+
+        .mobile-brand-actions {
+          display: flex;
+          height: 65px;
+          flex: 1;
+          align-items: center;
+        }
+
+        .mobile-action {
+          position: relative;
+          display: grid;
+          width: 59px;
+          height: 48px;
+          place-items: center;
+          color: #474747;
+        }
+
+        .mobile-action + .mobile-action {
+          border-left: 1px solid #ddd;
+        }
+
+        .mobile-action.search {
+          width: 57px;
+          margin-left: auto;
+          border: 0;
+        }
+
+        .hamburger,
+        .hamburger::before,
+        .hamburger::after {
+          width: 21px;
+          height: 3px;
+          border-radius: 1px;
+          background: currentColor;
+        }
+
+        .hamburger {
+          position: relative;
+        }
+
+        .hamburger::before,
+        .hamburger::after {
+          position: absolute;
+          left: 0;
+          content: "";
+        }
+
+        .hamburger::before {
+          top: -7px;
+        }
+
+        .hamburger::after {
+          top: 7px;
+        }
+
+        .calendar-icon {
+          position: relative;
+          width: 22px;
+          height: 21px;
+          border: 2px solid currentColor;
+        }
+
+        .calendar-icon::before {
+          position: absolute;
+          top: 4px;
+          left: 0;
+          width: 100%;
+          border-top: 2px solid currentColor;
+          content: "";
+        }
+
+        .calendar-icon::after {
+          position: absolute;
+          top: -5px;
+          left: 4px;
+          width: 10px;
+          height: 5px;
+          border-right: 3px solid currentColor;
+          border-left: 3px solid currentColor;
+          content: "";
+        }
+
+        .mobile-action .magnifier {
+          width: 20px;
+          height: 20px;
+          border-width: 4px;
+        }
+
+        .mobile-action .magnifier::after {
+          right: -8px;
+          bottom: -5px;
+          width: 9px;
+          height: 4px;
+        }
+
+        .service-alert {
+          position: relative;
+          min-height: 48px;
+          justify-content: flex-start;
+          padding: 10px 74px 10px 20px;
+          overflow: hidden;
+          font-size: 18px;
+          line-height: 28px;
+          white-space: nowrap;
+        }
+
+        .service-alert a,
+        .alert-extra {
+          display: none;
+        }
+
+        .service-alert > span:first-child {
+          width: 225px;
+          overflow: hidden;
+        }
+
+        .alert-ellipsis {
+          display: block;
+          margin-left: auto;
+          padding-left: 12px;
+          font-weight: 700;
+          letter-spacing: 2px;
+        }
+
+        .alert-close {
+          right: 34px;
+        }
+
+        .featured {
+          padding: 14px 20px 0;
+        }
+
+        h2 {
+          font-size: 28px;
+          line-height: 35px;
+        }
+
+        .featured-grid {
+          display: flex;
+          flex-direction: column;
+          gap: 0;
+          margin-top: 21px;
+          margin-right: 1px;
+          margin-left: 1px;
+        }
+
+        .feature-image {
+          aspect-ratio: 2 / 1;
+        }
+
+        .feature-title {
+          font-size: 20px;
+          line-height: 27px;
+        }
+
+        .left-feature + .left-feature {
+          margin-top: 50px;
+        }
+
+        .lead-feature {
+          margin-top: 48px;
+        }
+
+        .lead-feature .feature-title {
+          font-size: 22px;
+          line-height: 29px;
+        }
+
+        .feature-list {
+          margin-top: 48px;
+        }
+
+        .feature-list-item {
+          grid-template-columns: 42% 1fr;
+        }
+
+        .releases {
+          padding: 42px 20px 48px;
+        }
+
+        .release-tabs {
+          gap: 20px;
+          overflow: hidden;
+          white-space: nowrap;
+        }
+
+        .book-row {
+          gap: 22px;
+          margin-right: -20px;
+          padding-left: 0;
+        }
+      }
+
+      @media (min-width: 901px) {
+        .mobile-utility,
+        .alert-ellipsis {
+          display: none;
+        }
+      }
     </style>
   </head>
   <body>
-    <main class="client-preview" aria-label="Toronto Public Library homepage preview">
-      <picture>
-        <source media="(max-width: 640px)" srcset="./assets/homepage-mobile.png" />
-        <img
-          src="./assets/homepage-desktop.png"
-          alt="Toronto Public Library homepage"
-          draggable="false"
-        />
-      </picture>
+    <header class="site-header">
+      <div class="utility-bar">
+        <div class="utility-inner">
+          <div class="mobile-utility" aria-hidden="true">
+            <span class="pin-icon"></span>
+            <span class="help-icon">?</span>
+          </div>
+          <div class="desktop-utility" style="display: contents" aria-hidden="true">
+            <span class="utility-item"><span class="pin-icon"></span>Hours &amp; Locations<span class="chevron"></span></span>
+            <span class="utility-item"><span class="help-icon">?</span>Help<span class="chevron"></span></span>
+          </div>
+          <span class="utility-item login">Log In / Account<span class="chevron"></span></span>
+        </div>
+      </div>
+
+      <div class="brand-row">
+        <div class="brand-inner">
+          <picture>
+            <source
+              media="(max-width: 900px)"
+              srcset="https://cor-liv-cdn-static.bibliocommons.com/images/ONT-TPL/mobile_logo.png?1788178174318"
+            />
+            <img
+              class="logo"
+              src="https://cor-liv-cdn-static.bibliocommons.com/images/ONT-TPL/logo.png?1788178174318"
+              alt="Toronto Public Library"
+            />
+          </picture>
+          <div class="desktop-search" aria-hidden="true">
+            <span class="search-label">Search the</span>
+            <span class="search-select catalogue">Catalogue<span class="chevron"></span></span>
+            <span>by</span>
+            <span class="search-select keyword">Keyword<span class="chevron"></span></span>
+            <span class="search-field-wrap">
+              <input class="search-field" tabindex="-1" aria-label="Search" readonly />
+              <span class="search-button"><span class="magnifier"></span></span>
+              <span class="advanced-search">Advanced Search</span>
+            </span>
+          </div>
+          <div class="mobile-brand-actions" aria-hidden="true">
+            <span class="mobile-action"><span class="hamburger"></span></span>
+            <span class="mobile-action"><span class="calendar-icon"></span></span>
+            <span class="mobile-action search"><span class="magnifier"></span></span>
+          </div>
+        </div>
+      </div>
+
+      <nav class="primary-nav" aria-label="Main navigation">
+        <div class="nav-inner">
+          <span class="nav-item">Books, DVDs &amp; Music<span class="chevron"></span></span>
+          <span class="nav-item">eResources &amp; Research<span class="chevron"></span></span>
+          <span class="nav-item"><span class="calendar-small"></span>Programs<span class="chevron"></span></span>
+          <span class="nav-item">Using the Library<span class="chevron"></span></span>
+          <span class="nav-item">Teens</span>
+          <span class="nav-item">Kids<span class="chevron"></span></span>
+        </div>
+      </nav>
+    </header>
+
+    <div class="service-alert">
+      <span>To use our printing services, please visit a <a href="#" tabindex="-1">library branch</a>.</span>
+      <span class="alert-extra">&nbsp;Remote printing (print.tpl.ca) is currently unavailable. We apologize for the inconvenience.</span>
+      <span class="alert-ellipsis">...</span>
+      <span class="alert-close" aria-hidden="true"></span>
+    </div>
+
+    <main>
+      <h1>Toronto Public Library Homepage</h1>
+      <section class="featured page-inner">
+        <h2>Featured</h2>
+        <div class="featured-grid">
+          <div>
+            <article class="left-feature">
+              <img
+                class="feature-image"
+                src="https://cdn-web-main.bibliocms.com/wp-content/uploads/sites/164/2026/08/Visitor-to-Toys-Alive-888x444.jpg?ver=260814180659"
+                alt="Toys Alive exhibit"
+              />
+              <h3 class="feature-title">Visit our Toys Alive exhibit before it's gone</h3>
+            </article>
+            <article class="left-feature">
+              <img
+                class="feature-image"
+                src="https://cdn-web-main.bibliocms.com/wp-content/uploads/sites/164/2026/08/Kid-drawing-shark-888x444.jpg?ver=260818135631"
+                alt="Child drawing at a library program"
+              />
+              <h3 class="feature-title">Summer programs for kids</h3>
+            </article>
+          </div>
+
+          <article class="lead-feature">
+            <img
+              class="feature-image"
+              src="https://cdn-web-main.bibliocms.com/wp-content/uploads/sites/164/2026/08/Salon-Series-Fall-2026-Website-Hompage-Spot-888x444.jpg?ver=260819165214"
+              alt="Toronto Public Library Salon Series guests"
+            />
+            <h3 class="feature-title">New books and big ideas return this fall</h3>
+            <p>Explore our Salon Series lineup, featuring Hazel Mae, Patrick Radden Keefe, Emily Wilson, Marlon James and more. Reserve your free tickets.</p>
+          </article>
+
+          <div class="feature-list">
+            <article class="feature-list-item">
+              <img class="feature-image" src="https://cdn-web-main.bibliocms.com/wp-content/uploads/sites/164/2026/07/Kid-using-library-computer-888x444.jpg?ver=260831133729" alt="Child using a library computer" />
+              <h3 class="feature-title">Trusted info from Britannica Library</h3>
+            </article>
+            <article class="feature-list-item">
+              <img class="feature-image" src="https://cdn-web-main.bibliocms.com/wp-content/uploads/sites/164/2026/07/BusinessInc_SmallBusiness-2-1-888x444.jpg?ver=260817140124" alt="Small business program" />
+              <h3 class="feature-title">Business Inc: 8 weeks to build your business</h3>
+            </article>
+            <article class="feature-list-item">
+              <img class="feature-image" src="https://cdn-web-main.bibliocms.com/wp-content/uploads/sites/164/2026/08/New-to-Canada-Alt-888x444.png?ver=260824134554" alt="Services for newcomers" />
+              <h3 class="feature-title">Services for newcomers</h3>
+            </article>
+            <article class="feature-list-item">
+              <img class="feature-image" src="https://cdn-web-main.bibliocms.com/wp-content/uploads/sites/164/2026/08/homepage-french-books-1-888x444.png?ver=260831133919" alt="French books" />
+              <h3 class="feature-title">French books to borrow</h3>
+            </article>
+            <article class="feature-list-item">
+              <img class="feature-image" src="https://cdn-web-main.bibliocms.com/wp-content/uploads/sites/164/2026/08/Crochet-and-knit-clubs_Homepage-888x444.png?ver=260805170421" alt="Crochet and knit clubs" />
+              <h3 class="feature-title">Crochet and knit clubs</h3>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="releases page-inner">
+        <h2>New book releases</h2>
+        <div class="release-tabs" aria-hidden="true">
+          <span class="release-tab active">For adults</span>
+          <span class="release-tab">For teens</span>
+          <span class="release-tab">For kids</span>
+        </div>
+        <div class="book-row">
+          <article class="book">
+            <img src="https://secure.syndetics.com/index.aspx?isbn=9780316601849/MC.GIF&amp;client=416-978-7639&amp;type=xw12&amp;oclc=" alt="Blacktail book cover" />
+            <p class="book-title">Blacktail</p>
+          </article>
+          <article class="book">
+            <img src="https://secure.syndetics.com/index.aspx?isbn=9780063515222/MC.GIF&amp;client=416-978-7639&amp;type=xw12&amp;oclc=" alt="The Knave and the Moon book cover" />
+            <p class="book-title">The Knave and the Moon</p>
+          </article>
+          <article class="book">
+            <img src="https://secure.syndetics.com/index.aspx?isbn=9781443476416/MC.GIF&amp;client=416-978-7639&amp;type=xw12&amp;oclc=" alt="The Most Dangerous Games book cover" />
+            <p class="book-title">The Most Dangerous Games</p>
+          </article>
+          <article class="book">
+            <img src="https://secure.syndetics.com/index.aspx?isbn=9781443476706/MC.GIF&amp;client=416-978-7639&amp;type=xw12&amp;oclc=" alt="This Changes Everything book cover" />
+            <p class="book-title">This Changes Everything</p>
+          </article>
+          <article class="book">
+            <img src="https://secure.syndetics.com/index.aspx?isbn=9781335003928/MC.GIF&amp;client=416-978-7639&amp;type=xw12&amp;oclc=" alt="The Birthing Tree book cover" />
+            <p class="book-title">The Birthing Tree</p>
+          </article>
+        </div>
+      </section>
     </main>
 
     <script
