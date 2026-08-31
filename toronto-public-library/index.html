@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Toronto Public Library with Eko</title>
+    <style>
+      html,
+      body {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        overflow: hidden;
+        background: #fff;
+      }
+
+      .client-preview,
+      .client-preview picture,
+      .client-preview img {
+        position: fixed;
+        inset: 0;
+        z-index: 0;
+        display: block;
+        width: 100%;
+        height: 100%;
+      }
+
+      .client-preview img {
+        object-fit: cover;
+        object-position: top center;
+        user-select: none;
+      }
+
+      #eko__frame {
+        z-index: 2147483647;
+      }
+    </style>
+  </head>
+  <body>
+    <main class="client-preview" aria-label="Toronto Public Library homepage preview">
+      <picture>
+        <source media="(max-width: 640px)" srcset="./assets/homepage-mobile.png" />
+        <img
+          src="./assets/homepage-desktop.png"
+          alt="Toronto Public Library homepage"
+          draggable="false"
+        />
+      </picture>
+    </main>
+
+    <script
+      src="https://app.ekohq.com/eko-chatbox.js"
+      data-project-id="47fa3f19-7e22-4126-9dc0-34ed063224b9"
+    ></script>
+  </body>
+</html>

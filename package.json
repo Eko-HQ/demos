@@ -4,6 +4,7 @@
   "scripts": {
     "arison": "bun run server.ts arison",
     "beach-rotana-hotel": "bun run server.ts beach-rotana-hotel",
-    "roadster-diner": "bun run server.ts roadster-diner"
+    "roadster-diner": "bun run server.ts roadster-diner",
+    "toronto-public-library": "bun run server.ts toronto-public-library"
   }
 }
