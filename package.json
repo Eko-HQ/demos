@@ -5,6 +5,7 @@
     "arison": "bun run server.ts arison",
     "beach-rotana-hotel": "bun run server.ts beach-rotana-hotel",
     "confidence-real-estate": "bun run server.ts confidence-real-estate",
+    "plus-properties-cyprus": "bun run server.ts plus-properties-cyprus",
     "roadster-diner": "bun run server.ts roadster-diner",
     "saint-george-hospital": "bun run server.ts saint-george-hospital",
     "toronto-public-library": "bun run server.ts toronto-public-library"
