@@ -7,6 +7,7 @@
     "confidence-real-estate": "bun run server.ts confidence-real-estate",
     "c-properties": "bun run server.ts c-properties",
     "plus-properties-cyprus": "bun run server.ts plus-properties-cyprus",
+    "s-gestion": "bun run server.ts s-gestion",
     "roadster-diner": "bun run server.ts roadster-diner",
     "saint-george-hospital": "bun run server.ts saint-george-hospital",
     "toronto-public-library": "bun run server.ts toronto-public-library"
