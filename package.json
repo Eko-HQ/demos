@@ -6,6 +6,7 @@
     "beach-rotana-hotel": "bun run server.ts beach-rotana-hotel",
     "confidence-real-estate": "bun run server.ts confidence-real-estate",
     "c-properties": "bun run server.ts c-properties",
+    "ciel-et-jardin": "bun run server.ts ciel-et-jardin",
     "plus-properties-cyprus": "bun run server.ts plus-properties-cyprus",
     "s-gestion": "bun run server.ts s-gestion",
     "roadster-diner": "bun run server.ts roadster-diner",
