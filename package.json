@@ -11,6 +11,7 @@
     "s-gestion": "bun run server.ts s-gestion",
     "roadster-diner": "bun run server.ts roadster-diner",
     "saint-george-hospital": "bun run server.ts saint-george-hospital",
+    "supperclub": "bun run server.ts supperclub",
     "toronto-public-library": "bun run server.ts toronto-public-library"
   }
 }
