@@ -32,10 +32,49 @@
   <body>
     <iframe
       id="client-homepage"
-      src="https://supperclubme.com/"
+      src="./assets/homepage.html"
       title="SupperClub website preview"
-      referrerpolicy="strict-origin-when-cross-origin"
+      sandbox="allow-same-origin"
     ></iframe>
+
+    <script>
+      // The local homepage contains presentation only: no client scripts,
+      // tracking, WhatsApp widget, forms, or live navigation.
+      document.getElementById("client-homepage").addEventListener("load", (event) => {
+        const homepage = event.target.contentDocument;
+        homepage.addEventListener("click", (event) => {
+          if (event.target.closest("a")) event.preventDefault();
+        });
+        const header = homepage.querySelector("header");
+        homepage.defaultView.addEventListener("scroll", () => {
+          const scrolled = homepage.defaultView.scrollY > 20;
+          header.classList.toggle("absolute", !scrolled);
+          header.classList.toggle("sticky", scrolled);
+          header.classList.toggle("bg-transparent", !scrolled);
+          header.classList.toggle("bg-footerBg", scrolled);
+          header.classList.toggle("shadow-sticky", scrolled);
+        }, { passive: true });
+
+        // Replace the source site's JS-sized carousels with responsive strips.
+        const style = homepage.createElement("style");
+        style.textContent = `
+          .slick-list { overflow-x: auto !important; scrollbar-width: none; }
+          .slick-list::-webkit-scrollbar { display: none; }
+          .slick-track { display: flex !important; width: 100% !important; transform: none !important; }
+          .slick-track::before, .slick-track::after { display: none; }
+          .slick-slide { flex: 0 0 calc(100% / 7); width: calc(100% / 7) !important; float: none; }
+          .offers_slider .slick-slide { flex-basis: 25%; width: 25% !important; }
+          @media (max-width: 1023px) {
+            .slick-slide { flex-basis: 25%; width: 25% !important; }
+            .offers_slider .slick-slide { flex-basis: 50%; width: 50% !important; }
+          }
+          @media (max-width: 639px) {
+            .offers_slider .slick-slide { flex-basis: 100%; width: 100% !important; }
+          }
+        `;
+        homepage.head.append(style);
+      });
+    </script>
 
     <script
       src="https://me.ekohq.com/eko-chatbox.js"
